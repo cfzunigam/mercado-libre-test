@@ -1,0 +1,66 @@
+// Variables
+$primary-color: #007bff;
+$secondary-color: #0056b3;
+$border-color: #ddd;
+$text-color: #333;
+$font-size: 16px;
+
+// Mixins
+@mixin border-radius($radius) {
+  border-radius: $radius;
+}
+
+// Container
+.searchContainer {
+  color: #fbe404;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  justify-content: center;
+  /* Centra el contenido horizontalmente */
+}
+
+// Search Box
+.searchBox {
+  display: flex;
+  border: 2vw solid #fbe404;
+  @include border-radius(4px);
+  overflow: hidden;
+
+  input[type="text"] {
+    font-size: 16px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    flex-grow: 1;
+    padding-inline-start: 5%;
+    /* Permite que el campo de entrada ocupe el espacio disponible */
+  }
+
+  button {
+    border: 2vw;
+    color: #fff;
+    cursor: pointer;
+    font-size: $font-size;
+    @include border-radius(0 4px 4px 0);
+
+  }
+}
+
+.searchBox img {
+  display: block;
+  /* Elimina el espacio blanco debajo de las imágenes */
+}
+
+.searchIcon {
+  width: 2vw;
+  height: 2vw;
+  padding: 0px;
+  background-color: grey;
+}
+
+.botonMenu {
+  background: none; /* Elimina el fondo predeterminado del botón */
+  border: none; /* Elimina el borde del botón */
+  cursor: pointer; /* Cambia el cursor cuando pasa sobre el botón */
+  padding: 0; /* Elimina el padding del botón */
+}
