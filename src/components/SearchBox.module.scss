@@ -12,12 +12,10 @@ $font-size: 16px;
 
 // Container
 .searchContainer {
-  color: #fbe404;
   justify-content: center;
   align-items: center;
   width: 100vw;
   justify-content: center;
-  /* Centra el contenido horizontalmente */
 }
 
 // Search Box
@@ -33,7 +31,6 @@ $font-size: 16px;
     border-radius: 4px;
     flex-grow: 1;
     padding-inline-start: 5%;
-    /* Permite que el campo de entrada ocupe el espacio disponible */
   }
 
   button {
@@ -48,7 +45,6 @@ $font-size: 16px;
 
 .searchBox img {
   display: block;
-  /* Elimina el espacio blanco debajo de las imágenes */
 }
 
 .searchIcon {
@@ -59,8 +55,8 @@ $font-size: 16px;
 }
 
 .botonMenu {
-  background: none; /* Elimina el fondo predeterminado del botón */
-  border: none; /* Elimina el borde del botón */
-  cursor: pointer; /* Cambia el cursor cuando pasa sobre el botón */
-  padding: 0; /* Elimina el padding del botón */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }

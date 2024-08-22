@@ -1,15 +1,22 @@
-// import logo from './logo.svg';
 import './App.css';
-import SearchBox  from './components/SearchBox'
-import SearchResults from './components/SearchResult';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import SearchBox  from './components/SearchBox';
+import SearchResults  from './components/SearchResults';
+import ProductDetail  from './components/ProductDetail';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-        <SearchBox/>
-        <SearchResults/>
-    </div>
+    <Router>
+      <div>
+        <SearchBox />
+        <Routes>
+          <Route path="/" element={null} />
+          <Route path="/items" element={<SearchResults />} />
+          <Route path="/items/:id" element={<ProductDetail />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
