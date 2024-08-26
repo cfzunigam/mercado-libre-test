@@ -1,33 +1,66 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
+import Breadcrumb from './Breadcrumb';
+import styles from './SearchResults.module.scss';
 
 const SearchResults = () => {
   const location = useLocation();
-
   const query = new URLSearchParams(location.search).get('search');
+  const [backendData, setBackendData] = useState({ items: [], category: '' });
+  const [showNoResults, setShowNoResults] = useState(false);
 
-  const [backendData, setBackendData] = useState([]);
   useEffect(() => {
+    setShowNoResults(false); 
     fetch(`/api/items?q=${query}`)
       .then(response => response.json())
-      .then(data => setBackendData(data.items));
+      .then(data => {
+        setBackendData(data);
+        if (data.items.length === 0) {
+          setTimeout(() => {
+            setShowNoResults(true);
+          }, 1000);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setShowNoResults(true); 
+      });
   }, [query]);
 
-  const limitedProducts = backendData.slice(0, 4);
+  const limitedProducts = Array.isArray(backendData.items) ?
+    backendData.items.slice(0, 4) : [];
+
+  const formatNumber = (number) => {
+    return new Intl.NumberFormat('es-ES', { useGrouping: true }).format(number);
+  };
 
   return (
-    <div className="search-results">
-      <h2>Resultados de búsqueda</h2>
-      <div className="products-grid">
-        {limitedProducts.map(product => (
-          <div key={product.id} className="product-card">
-            <div className="product-info">
-              <h3>{product.title}</h3>
-              <p>{product.price.amount}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className={styles.searchResults}>
+      <Breadcrumb category={backendData.category} />
+      {showNoResults ? (
+        <p className={styles.noResultsMessage}>No encontramos lo que buscabas</p>
+      ) : (
+        <ul className={styles.productsGrid}>
+          {limitedProducts.map(product => (
+            <li key={product.id} className={styles.productItem}>
+              <Link to={`/items/${product.id}`}>
+                <div className={styles.productDetail}>
+                  <div className={styles.productImage}>
+                    <img src={product.picture} alt={product.title} />
+                  </div>
+                  <div className={styles.productInfo}>
+                    <p className={styles.productPrice}>
+                      $ {formatNumber(product.price.amount)}
+                      <span className={styles.priceDecimals}> {product.price.decimals}</span>
+                    </p>
+                    <p className={styles.productTitle}>{product.title}</p>
+                  </div>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

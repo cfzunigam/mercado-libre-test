@@ -1,16 +1,13 @@
-// Variables
 $primary-color: #007bff;
 $secondary-color: #0056b3;
 $border-color: #ddd;
 $text-color: #333;
 $font-size: 16px;
 
-// Mixins
 @mixin border-radius($radius) {
   border-radius: $radius;
 }
 
-// Container
 .searchContainer {
   justify-content: center;
   align-items: center;
@@ -18,10 +15,9 @@ $font-size: 16px;
   justify-content: center;
 }
 
-// Search Box
 .searchBox {
   display: flex;
-  border: 2vw solid #fbe404;
+  border: 2vw solid #fce404;
   @include border-radius(4px);
   overflow: hidden;
 
@@ -41,10 +37,10 @@ $font-size: 16px;
     @include border-radius(0 4px 4px 0);
 
   }
-}
 
-.searchBox img {
-  display: block;
+  img {
+    display: block;
+  }
 }
 
 .searchIcon {

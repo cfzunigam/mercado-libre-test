@@ -1,32 +1,61 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-
+import styles from './ProductDetail.module.scss';
 
 const ProductDetail = () => {
   const location = useLocation();
-  const query = new URLSearchParams(location.state).get('query');
+  const query = location.state ? new URLSearchParams(location.state).get('query') :
+    location.pathname.split('/').pop();
+  
+  const [backendData, setBackendData] = useState(null);
+  const [loading, setLoading] = useState(true); 
 
-  const [backendData, setBackendData] = useState([]);
   useEffect(() => {
+    setLoading(true);
     fetch(`/api/items/${query}`)
       .then(response => response.json())
-      .then(data => setBackendData(data));
+      .then(data => {
+        setBackendData(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   }, [query]);
 
+  const formatNumber = (number) => {
+    return new Intl.NumberFormat('es-ES', { useGrouping: true }).format(number);
+  };
+
+  if (loading) {
+    return <p>Cargando...</p>;
+  }
+
+  if (!backendData || !backendData.item) {
+    return <p>No encontramos lo que buscabas</p>;
+  }
+
   return (
-    <div className="search-results">
-      <h2>Resultados de búsqueda Detalle</h2>
-      <div className="products-grid">
-        <div className="product-info">
-          {backendData.item ? (
-            <>
-              <p>{backendData.item.title}</p>
-              <p>{backendData.item.price?.amount || 'Price not available'}</p>
-            </>
-          ) : (
-            <p></p>
-          )}
+    <div className={styles.productDetailContainer}>
+      <div className={styles.productDetail}>
+        <div className={styles.productImage}>
+          <img src={backendData.item.picture} alt={backendData.item.title} />
         </div>
+        <div className={styles.productInfo}>
+          <p className={styles.productCondition}>{backendData.item.condition}</p>
+          <p className={styles.productTitle}>{backendData.item.title}</p>
+          <p className={styles.productPrice}>
+            ${formatNumber(backendData.item.price?.amount) || 'Price not available'}
+            <span className={styles.priceDecimals}>{backendData.item.price?.decimals || ''}</span>
+          </p>
+          <button className={styles.buyButton}>Comprar</button>
+        </div>
+      </div>
+      <div className={styles.productDescriptionTitle}>
+        <p>Descripción del producto</p>
+      </div>
+      <div className={styles.productDescription}>
+        <p>{backendData.item.description}</p>
       </div>
     </div>
   );
